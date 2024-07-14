@@ -8,16 +8,24 @@ type Props = {
   value?: string;
   placeholder?: string;
   onChangeText?: (e: string) => void;
+  className?: string;
 };
 
 const InputBox: ForwardRefRenderFunction<typeof TextInput, Props> = (
-  { isDisabled = false, keyboardType, value, onChangeText, placeholder },
+  {
+    isDisabled = false,
+    keyboardType,
+    value,
+    onChangeText,
+    placeholder,
+    className,
+  },
   ref
 ) => {
   return (
     <TextInput
       ref={ref}
-      className="mt-7 rounded-sm p-0"
+      className={className}
       mode="outlined"
       disabled={isDisabled}
       keyboardType={keyboardType}
