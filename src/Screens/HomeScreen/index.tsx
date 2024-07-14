@@ -1,6 +1,6 @@
 import { Pressable, View } from "react-native";
 import { FC } from "react";
-import { ScreenWrapper } from "../../Components";
+import { CustomRadioButton, ScreenWrapper } from "../../Components";
 import useHomeScreenLogic from "./Logic/useHomeScreenLogic";
 import { RadioButton, Text, TextInput } from "react-native-paper";
 
@@ -16,6 +16,7 @@ const HomeScreen: FC = () => {
     selectPhone,
     typeOfKeyboard,
     uniqueId,
+    uniqueIdRef,
   } = useHomeScreenLogic();
 
   return (
@@ -25,56 +26,39 @@ const HomeScreen: FC = () => {
           Select one of these for your unique id{" "}
         </Text>
 
+        {/* Radio Buttons  */}
         <View className="mt-5 justify-between">
-          <Pressable className="flex-row items-center" onPress={selectEmail}>
-            <Text variant="labelLarge" className="text-lg">
-              Enter email
-            </Text>
-            <RadioButton
-              value="EMAIL"
-              status={idType === "EMAIL" ? "checked" : "unchecked"}
-              onPress={selectEmail}
-            />
-          </Pressable>
+          <CustomRadioButton
+            value={"EMAIL"}
+            label="Enter email"
+            isChecked={idType === "EMAIL"}
+            onSelect={selectEmail}
+          />
 
-          <Pressable className="flex-row items-center" onPress={selectPhone}>
-            <Text variant="labelLarge" className="text-lg">
-              Enter phone
-            </Text>
-            <RadioButton
-              value="PHONE"
-              status={idType === "PHONE" ? "checked" : "unchecked"}
-              onPress={selectPhone}
-            />
-          </Pressable>
+          <CustomRadioButton
+            value={"PHONE"}
+            label="Enter phone"
+            isChecked={idType === "PHONE"}
+            onSelect={selectPhone}
+          />
 
-          <Pressable className="flex-row items-center" onPress={selectCustom}>
-            <Text variant="labelLarge" className="text-lg">
-              Enter custom
-            </Text>
-            <RadioButton
-              value="CUSTOM"
-              status={idType === "CUSTOM" ? "checked" : "unchecked"}
-              onPress={selectCustom}
-            />
-          </Pressable>
+          <CustomRadioButton
+            value={"CUSTOM"}
+            label="Enter custom"
+            isChecked={idType === "CUSTOM"}
+            onSelect={selectCustom}
+          />
 
-          <Pressable
-            className="flex-row items-center"
-            onPress={selectGenerateRadom}
-          >
-            <Text variant="labelLarge" className="text-lg">
-              Generate random
-            </Text>
-            <RadioButton
-              value="GENERATE"
-              status={idType === "GENERATE" ? "checked" : "unchecked"}
-              onPress={selectGenerateRadom}
-            />
-          </Pressable>
+          <CustomRadioButton
+            value={"GENERATE"}
+            label="Generate random"
+            isChecked={idType === "GENERATE"}
+            onSelect={selectGenerateRadom}
+          />
         </View>
 
         <TextInput
+          ref={uniqueIdRef}
           className="mt-7 rounded-sm p-0"
           mode="outlined"
           disabled={idType === "GENERATE"}
@@ -82,7 +66,7 @@ const HomeScreen: FC = () => {
           value={uniqueId}
           onChangeText={handleChangeUniqueId}
           placeholder={placeholder}
-          autoCapitalize={"none"}
+          autoCapitalize="none"
         />
 
         <Pressable
