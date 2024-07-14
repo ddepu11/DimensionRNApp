@@ -1,8 +1,9 @@
 import { Pressable, View } from "react-native";
+import { Text } from "react-native-paper";
 import { FC } from "react";
-import { CustomRadioButton, ScreenWrapper } from "../../Components";
+
+import { CustomRadioButton, InputBox, ScreenWrapper } from "../../Components";
 import useHomeScreenLogic from "./Logic/useHomeScreenLogic";
-import { RadioButton, Text, TextInput } from "react-native-paper";
 
 const HomeScreen: FC = () => {
   const {
@@ -57,16 +58,13 @@ const HomeScreen: FC = () => {
           />
         </View>
 
-        <TextInput
+        <InputBox
           ref={uniqueIdRef}
-          className="mt-7 rounded-sm p-0"
-          mode="outlined"
-          disabled={idType === "GENERATE"}
+          isDisabled={idType === "GENERATE"}
           keyboardType={typeOfKeyboard}
           value={uniqueId}
           onChangeText={handleChangeUniqueId}
           placeholder={placeholder}
-          autoCapitalize="none"
         />
 
         <Pressable
