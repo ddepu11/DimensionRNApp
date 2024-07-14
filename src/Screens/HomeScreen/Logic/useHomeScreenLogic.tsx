@@ -37,15 +37,15 @@ const useHomeScreenLogic = () => {
   };
 
   const selectEmail = () => {
-    focusUniqueIdInputBox();
+    // focusUniqueIdInputBox();
     setIdType("EMAIL");
   };
   const selectPhone = () => {
-    focusUniqueIdInputBox();
+    // focusUniqueIdInputBox();
     setIdType("PHONE");
   };
   const selectCustom = () => {
-    focusUniqueIdInputBox();
+    // focusUniqueIdInputBox();
     setIdType("CUSTOM");
   };
   const selectGenerateRadom = () => {
