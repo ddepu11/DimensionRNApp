@@ -59,12 +59,12 @@ const HomeScreen: FC = () => {
         </View>
 
         <InputBox
-          ref={uniqueIdRef}
           isDisabled={idType === "GENERATE"}
           keyboardType={typeOfKeyboard}
           value={uniqueId}
           onChangeText={handleChangeUniqueId}
           placeholder={placeholder}
+          className="mt-7 rounded-md w-full"
         />
 
         <Pressable
