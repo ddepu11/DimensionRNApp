@@ -11,7 +11,11 @@ const ScreenWrapper: FC<PropsWithChildren> = ({ children }) => {
   return (
     <SafeAreaView className="flex-1 px-5">
       <Pressable className="flex-1" onPress={closeKeyboard}>
-        <KeyboardAwareScrollView extraHeight={120} enableOnAndroid>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{ flex: 1 }}
+          extraHeight={120}
+          enableOnAndroid
+        >
           <StatusBar style="auto" />
 
           {children}
