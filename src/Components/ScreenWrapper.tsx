@@ -8,7 +8,7 @@ const ScreenWrapper: FC<PropsWithChildren> = ({ children }) => {
   const closeKeyboard = () => Keyboard.dismiss();
 
   return (
-    <SafeAreaView className="flex-1 px-2">
+    <SafeAreaView className="flex-1 px-5">
       <Pressable className="flex-1" onPress={closeKeyboard}>
         <StatusBar style="auto" />
 
