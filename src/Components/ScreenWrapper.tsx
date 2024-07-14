@@ -1,13 +1,19 @@
-import { StatusBar } from "expo-status-bar";
-import React, { FC, PropsWithChildren } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import React, { FC, PropsWithChildren } from "react";
+import { Keyboard, Pressable } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 const ScreenWrapper: FC<PropsWithChildren> = ({ children }) => {
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar style="auto" />
+  // When user presses out side of any input box close the keyboard
+  const closeKeyboard = () => Keyboard.dismiss();
 
-      {children}
+  return (
+    <SafeAreaView className="flex-1 px-2">
+      <Pressable className="flex-1" onPress={closeKeyboard}>
+        <StatusBar style="auto" />
+
+        {children}
+      </Pressable>
     </SafeAreaView>
   );
 };
