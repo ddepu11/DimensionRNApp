@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { Keyboard, KeyboardType } from "react-native";
-import { useCallback, useState } from "react";
+import { Keyboard, KeyboardType, TextInput } from "react-native";
+import { useCallback, useRef, useState } from "react";
 import { nanoid } from "nanoid";
 
 type IdType = undefined | "EMAIL" | "PHONE" | "GENERATE" | "CUSTOM";
@@ -10,8 +10,9 @@ const useHomeScreenLogic = () => {
   const [idType, setIdType] = useState<IdType>("GENERATE");
 
   const [uniqueId, setUniqueId] = useState("");
-  const navigation = useNavigation();
+  const uniqueIdRef = useRef<undefined | TextInput>();
 
+  const navigation = useNavigation();
   const onSubmit = () => {
     Keyboard.dismiss();
     if (uniqueId) {
@@ -31,10 +32,26 @@ const useHomeScreenLogic = () => {
     typeOfKeyboard = "default";
   }
 
-  const selectEmail = () => setIdType("EMAIL");
-  const selectPhone = () => setIdType("PHONE");
-  const selectCustom = () => setIdType("CUSTOM");
-  const selectGenerateRadom = () => setIdType("GENERATE");
+  const focusUniqueIdInputBox = () => {
+    uniqueIdRef.current?.focus();
+  };
+
+  const selectEmail = () => {
+    focusUniqueIdInputBox();
+    setIdType("EMAIL");
+  };
+  const selectPhone = () => {
+    focusUniqueIdInputBox();
+    setIdType("PHONE");
+  };
+  const selectCustom = () => {
+    focusUniqueIdInputBox();
+    setIdType("CUSTOM");
+  };
+  const selectGenerateRadom = () => {
+    Keyboard.dismiss();
+    setIdType("GENERATE");
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -68,6 +85,7 @@ const useHomeScreenLogic = () => {
     idType,
     onSubmit,
     uniqueId,
+    uniqueIdRef,
   };
 };
 
