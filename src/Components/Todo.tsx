@@ -22,10 +22,7 @@ const Todo: FC<Props> = ({ todo, handleComplete, handleDeleteTodo }) => {
 
   return (
     <View className="mb-5 flex-row  justify-between rounded-lg">
-      <View
-        className={"flex-row pl-1 justify-start"}
-        style={{ alignItems: "center" }}
-      >
+      <View className={"flex-row pl-1 justify-start items-center"}>
         <CheckBox
           disabled={false}
           value={completed}
@@ -41,11 +38,11 @@ const Todo: FC<Props> = ({ todo, handleComplete, handleDeleteTodo }) => {
             textDecorationLine: `${completed ? "line-through" : undefined}`,
           }}
         >
-          The problem is with the Fast refresh if you want to
+          {content}
         </Text>
       </View>
 
-      <Pressable onPress={deleteTodod} className="justify-center">
+      <Pressable onPress={deleteTodod} className="items-center">
         <Ionicons name="trash-bin-sharp" size={18} color="red" />
       </Pressable>
     </View>

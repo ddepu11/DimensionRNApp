@@ -3,7 +3,7 @@ import { Pressable, View } from "react-native";
 import { Text } from "react-native-paper";
 
 import useTodosScreenLogic from "./Logic/useTodosScreenLogic";
-import { Button, Header, InputBox, ScreenWrapper } from "../../Components";
+import { Button, InputBox, ScreenWrapper } from "../../Components";
 import { FlashList } from "@shopify/flash-list";
 
 const TodosScreen: FC = () => {
@@ -15,6 +15,7 @@ const TodosScreen: FC = () => {
     setContent,
     ToDoRenderItem,
     TodoEmptyComponent,
+    logoutUser,
   } = useTodosScreenLogic();
 
   return (
@@ -33,11 +34,15 @@ const TodosScreen: FC = () => {
             text="Logout"
             className="bg-slate-500 rounded-sm px-2 py-1"
             textClassName="text-white text-sm text-center"
-            // onPress={onSubmit}
+            onPress={logoutUser}
           />
         </View>
 
         <View className="mt-2 w-full relative  h-4/5">
+          <Text variant="headlineSmall" className="text-3xl text-black">
+            All ToDos
+          </Text>
+
           <FlashList
             data={todos}
             scrollEnabled

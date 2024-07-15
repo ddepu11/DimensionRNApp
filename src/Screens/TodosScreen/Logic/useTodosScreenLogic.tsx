@@ -7,7 +7,11 @@ import {
   newGenericDb,
 } from "@react-native-replicache/react-native-expo-sqlite";
 import { useSubscribe } from "replicache-react";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
 import { Todo, TodoWithID } from "../../../../types";
@@ -210,6 +214,19 @@ const useTodosScreenLogic = () => {
     );
   };
 
+  const navigation = useNavigation();
+
+  const logoutUser = async () => {
+    try {
+      await AsyncStorage.removeItem("@userID");
+    } catch (e) {
+      // remove error
+    }
+    console.log("Done.");
+
+    navigation.navigate("Home");
+  };
+
   return {
     content,
     onSubmit,
@@ -220,6 +237,7 @@ const useTodosScreenLogic = () => {
     setContent,
     ToDoRenderItem,
     TodoEmptyComponent,
+    logoutUser,
   };
 };
 
