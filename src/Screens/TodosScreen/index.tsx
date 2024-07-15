@@ -19,6 +19,7 @@ const TodosScreen: FC = () => {
     openUpodateModal,
     closeModal,
   } = useTodosScreenLogic();
+
   return (
     <ScreenWrapper>
       <View className="pt-3 flex-1 justify-between">
