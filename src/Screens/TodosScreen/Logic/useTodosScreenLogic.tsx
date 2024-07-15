@@ -35,7 +35,7 @@ const useTodosScreenLogic = () => {
   }
 
   useEffect(() => {
-    // console.log("updating replicache");
+    // .log("updating replicache");
     const r = new Replicache({
       name: route.params?.uniqueId,
       licenseKey,
@@ -60,7 +60,6 @@ const useTodosScreenLogic = () => {
 
         async deleteTodo(tx: WriteTransaction, id: string) {
           const res = await tx.del(`todo/${id}`);
-          console.log("______RES", res, id);
         },
       },
       pushURL: `${EXPO_PUBLIC_BASE_URL}/api/replicache/push`,
@@ -89,18 +88,20 @@ const useTodosScreenLogic = () => {
   const [content, setContent] = useState<string>("");
 
   const onSubmit = async () => {
-    let last: Todo | null = null;
-    if (todos.length) {
-      const lastMessageTuple = todos[todos.length - 1];
-      last = lastMessageTuple[1];
-    }
-    const order = (last?.order ?? 0) + 1;
+    if (content) {
+      let last: Todo | null = null;
+      if (todos.length) {
+        const lastMessageTuple = todos[todos.length - 1];
+        last = lastMessageTuple[1];
+      }
+      const order = (last?.order ?? 0) + 1;
 
-    await r?.mutate.createTodo({
-      id: new Date().getTime(),
-      content,
-      order,
-    });
+      await r?.mutate.createTodo({
+        id: new Date().getTime(),
+        content,
+        order,
+      });
+    }
 
     if (content) {
       setContent("");
@@ -120,13 +121,11 @@ const useTodosScreenLogic = () => {
         return null;
       }
     } catch (e) {
-      console.log(e);
       return null;
     }
   }, []);
 
   const handleDeleteTodo = async (todo: TodoWithID) => {
-    console.log("_____handle DELETE", todo);
     await r?.mutate.deleteTodo(todo.id);
   };
 
@@ -144,8 +143,6 @@ const useTodosScreenLogic = () => {
   };
 
   const listen = async (rep: Replicache) => {
-    console.log("listening");
-
     if (
       !EXPO_PUBLIC_REPLICHAT_PUSHER_KEY ||
       !EXPO_PUBLIC_REPLICHAT_PUSHER_CLUSTER
@@ -166,15 +163,12 @@ const useTodosScreenLogic = () => {
       await pusher.subscribe({
         channelName: "default",
         onEvent: async (event: PusherEvent) => {
-          console.log(`Event received: ${event.eventName}`);
           if (event.eventName === "poke") {
             await rep.pull();
           }
         },
       });
-    } catch (err) {
-      console.log("_________err", err);
-    }
+    } catch (err) {}
   };
 
   const openModal = () => {
@@ -216,7 +210,6 @@ const useTodosScreenLogic = () => {
     } catch (e) {
       // remove error
     }
-    console.log("Done.");
 
     navigation.navigate("Home");
   };
