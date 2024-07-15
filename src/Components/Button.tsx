@@ -11,7 +11,7 @@ type Props = {
 };
 
 const Button: FC<Props> = ({
-  disabled,
+  disabled = false,
   className,
   onPress,
   textClassName,
