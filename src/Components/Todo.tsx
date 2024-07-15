@@ -34,7 +34,13 @@ const Todo: FC<Props> = ({ todo, handleComplete, handleDeleteTodo }) => {
           style={{ width: 20, height: 20 }}
         />
 
-        <Text className="text-l ml-2" style={{ width: "86%" }}>
+        <Text
+          className="text-l ml-2"
+          style={{
+            width: "86%",
+            textDecorationLine: `${completed ? "line-through" : undefined}`,
+          }}
+        >
           The problem is with the Fast refresh if you want to
         </Text>
       </View>
