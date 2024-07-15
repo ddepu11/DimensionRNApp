@@ -6,7 +6,10 @@ import { PaperProvider } from "react-native-paper";
 import { HomeScreen, TodosScreen } from "./src/Screens";
 
 import { bootCryptoPolyfill } from "./src/Helpers/crypto-polyfill";
+import { LogBox } from "react-native";
 bootCryptoPolyfill();
+
+LogBox.ignoreAllLogs();
 
 const App: FC = () => {
   const Stack = createNativeStackNavigator();

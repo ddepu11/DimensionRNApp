@@ -78,17 +78,22 @@ const Todo: FC<Props> = ({
           </Text>
         </View>
 
-        <Pressable onPress={deleteTodod} className="items-center">
-          <Ionicons name="trash-bin-sharp" size={18} color="red" />
-        </Pressable>
+        <Ionicons
+          onPress={deleteTodod}
+          name="trash-bin-sharp"
+          size={20}
+          color="red"
+        />
       </Pressable>
 
-      <UpdateTodo
-        visible={openUpodateModal}
-        closeModal={closeModal}
-        conent={content}
-        updateToDo={updateToDo}
-      />
+      {openUpodateModal ? (
+        <UpdateTodo
+          visible={openUpodateModal}
+          closeModal={closeModal}
+          conent={content}
+          updateToDo={updateToDo}
+        />
+      ) : null}
     </>
   );
 };

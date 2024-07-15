@@ -11,8 +11,12 @@ import { Keyboard } from "react-native";
 import { Todo, TodoWithID } from "../../../../types";
 import TodoComponent from "../../../Components/Todo";
 
-const VITE_PUBLIC_REPLICHAT_PUSHER_KEY = "7bd83beeb647bd419630";
-const VITE_PUBLIC_REPLICHAT_PUSHER_CLUSTER = "ap2";
+const {
+  EXPO_PUBLIC_REPLICHAT_PUSHER_KEY,
+  EXPO_PUBLIC_REPLICHAT_PUSHER_CLUSTER,
+  EXPO_PUBLIC_RAPLICACHE_LICENCE_KEY,
+  EXPO_PUBLIC_BASE_URL,
+} = process.env;
 
 type ToDoListItemType = {
   item: [string, TodoWithID];
@@ -24,14 +28,14 @@ const useTodosScreenLogic = () => {
 
   const route = useRoute();
 
-  const licenseKey = "l704b192f22514ec4a563ab1400eab5fa";
+  const licenseKey = EXPO_PUBLIC_RAPLICACHE_LICENCE_KEY;
 
   if (!licenseKey) {
     throw new Error("Missing REPLICACHE_LICENSE_KEY");
   }
 
   useEffect(() => {
-    // console.log("updating replicache");
+    // .log("updating replicache");
     const r = new Replicache({
       name: route.params?.uniqueId,
       licenseKey,
@@ -56,11 +60,10 @@ const useTodosScreenLogic = () => {
 
         async deleteTodo(tx: WriteTransaction, id: string) {
           const res = await tx.del(`todo/${id}`);
-          console.log("______RES", res, id);
         },
       },
-      pushURL: `http://127.0.0.1:9000/api/replicache/push`,
-      pullURL: `http://127.0.0.1:9000/api/replicache/pull`,
+      pushURL: `${EXPO_PUBLIC_BASE_URL}/api/replicache/push`,
+      pullURL: `${EXPO_PUBLIC_BASE_URL}/api/replicache/pull`,
       experimentalCreateKVStore:
         createReplicacheExpoSQLiteExperimentalCreateKVStore,
       logLevel: "error",
@@ -85,18 +88,20 @@ const useTodosScreenLogic = () => {
   const [content, setContent] = useState<string>("");
 
   const onSubmit = async () => {
-    let last: Todo | null = null;
-    if (todos.length) {
-      const lastMessageTuple = todos[todos.length - 1];
-      last = lastMessageTuple[1];
-    }
-    const order = (last?.order ?? 0) + 1;
+    if (content) {
+      let last: Todo | null = null;
+      if (todos.length) {
+        const lastMessageTuple = todos[todos.length - 1];
+        last = lastMessageTuple[1];
+      }
+      const order = (last?.order ?? 0) + 1;
 
-    await r?.mutate.createTodo({
-      id: new Date().getTime(),
-      content,
-      order,
-    });
+      await r?.mutate.createTodo({
+        id: new Date().getTime(),
+        content,
+        order,
+      });
+    }
 
     if (content) {
       setContent("");
@@ -109,7 +114,6 @@ const useTodosScreenLogic = () => {
   useMemo(async () => {
     try {
       const value = await AsyncStorage.getItem("userID");
-      // console.log("_____________USERNAME", value);
       if (value !== null) {
         setUser(value);
         return value;
@@ -117,13 +121,11 @@ const useTodosScreenLogic = () => {
         return null;
       }
     } catch (e) {
-      console.log(e);
       return null;
     }
   }, []);
 
   const handleDeleteTodo = async (todo: TodoWithID) => {
-    console.log("_____handle DELETE", todo);
     await r?.mutate.deleteTodo(todo.id);
   };
 
@@ -141,11 +143,9 @@ const useTodosScreenLogic = () => {
   };
 
   const listen = async (rep: Replicache) => {
-    console.log("listening");
-
     if (
-      !VITE_PUBLIC_REPLICHAT_PUSHER_KEY ||
-      !VITE_PUBLIC_REPLICHAT_PUSHER_CLUSTER
+      !EXPO_PUBLIC_REPLICHAT_PUSHER_KEY ||
+      !EXPO_PUBLIC_REPLICHAT_PUSHER_CLUSTER
     ) {
       throw new Error("Missing PUSHER_KEY or PUSHER_CLUSTER in env");
     }
@@ -154,8 +154,8 @@ const useTodosScreenLogic = () => {
       const pusher = Pusher.getInstance();
 
       await pusher.init({
-        apiKey: VITE_PUBLIC_REPLICHAT_PUSHER_KEY,
-        cluster: VITE_PUBLIC_REPLICHAT_PUSHER_CLUSTER,
+        apiKey: EXPO_PUBLIC_REPLICHAT_PUSHER_KEY,
+        cluster: EXPO_PUBLIC_REPLICHAT_PUSHER_CLUSTER,
       });
 
       await pusher.connect();
@@ -163,15 +163,12 @@ const useTodosScreenLogic = () => {
       await pusher.subscribe({
         channelName: "default",
         onEvent: async (event: PusherEvent) => {
-          console.log(`Event received: ${event.eventName}`);
           if (event.eventName === "poke") {
             await rep.pull();
           }
         },
       });
-    } catch (err) {
-      console.log("_________err", err);
-    }
+    } catch (err) {}
   };
 
   const openModal = () => {
@@ -213,7 +210,6 @@ const useTodosScreenLogic = () => {
     } catch (e) {
       // remove error
     }
-    console.log("Done.");
 
     navigation.navigate("Home");
   };
