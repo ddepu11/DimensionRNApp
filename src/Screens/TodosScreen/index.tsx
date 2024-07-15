@@ -3,7 +3,7 @@ import { Pressable, View } from "react-native";
 import { Text } from "react-native-paper";
 
 import useTodosScreenLogic from "./Logic/useTodosScreenLogic";
-import { Header, InputBox, ScreenWrapper } from "../../Components";
+import { Button, InputBox, ScreenWrapper } from "../../Components";
 import { FlashList } from "@shopify/flash-list";
 
 const TodosScreen: FC = () => {
@@ -12,33 +12,54 @@ const TodosScreen: FC = () => {
     onSubmit,
     user,
     todos,
-    handleComplete,
-    handleDeleteTodo,
     setContent,
     ToDoRenderItem,
+    TodoEmptyComponent,
+    logoutUser,
+    openUpodateModal,
+    closeModal,
   } = useTodosScreenLogic();
 
   return (
     <ScreenWrapper>
-      <View className="flex-1 pt-5">
-        <Text variant="headlineSmall" className="text-sm">
-          Unique Id: {user ? user : ""}
-        </Text>
+      <View className="pt-3 flex-1 justify-between">
+        <View className="flex-row justify-between items-center">
+          <Text
+            variant="headlineSmall"
+            className="text-sm text-gray-700 font-bold"
+          >
+            Id: {user ? user : ""}
+          </Text>
 
-        <Header />
-
-        <View className="mt-2 w-full relative  h-3/4">
-          <FlashList
-            data={todos}
-            scrollEnabled
-            bounces={false}
-            renderItem={ToDoRenderItem}
-            estimatedItemSize={100}
-            contentContainerStyle={{ paddingTop: 20 }}
+          <Button
+            text="Logout"
+            className="bg-slate-500 rounded-sm px-2 py-1"
+            textClassName="text-white text-sm text-center"
+            onPress={logoutUser}
           />
         </View>
 
-        <View className="flex-row justify-between align-middle">
+        <View className="mt-2 w-full" style={{ height: 600 }}>
+          <Text variant="headlineSmall" className="text-3xl text-black">
+            All ToDos
+          </Text>
+          <FlashList
+            data={todos}
+            bounces={false}
+            showsVerticalScrollIndicator={false}
+            renderItem={ToDoRenderItem}
+            estimatedItemSize={100}
+            contentContainerStyle={{
+              paddingTop: 10,
+              paddingHorizontal: 1,
+            }}
+            // style={{ overflow: "visible" }}
+            overScrollMode="never"
+            ListEmptyComponent={TodoEmptyComponent}
+          />
+        </View>
+
+        <View className="flex-row justify-between">
           <InputBox
             keyboardType={"default"}
             value={content}

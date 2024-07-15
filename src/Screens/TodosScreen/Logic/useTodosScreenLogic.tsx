@@ -1,15 +1,13 @@
-import { useCallback, useMemo } from "react";
-import { useEffect, useState } from "react";
-import { Keyboard, Pressable, View } from "react-native";
-import { Replicache, WriteTransaction } from "replicache";
-import {
-  createReplicacheExpoSQLiteExperimentalCreateKVStore,
-  newGenericDb,
-} from "@react-native-replicache/react-native-expo-sqlite";
-import { useSubscribe } from "replicache-react";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createReplicacheExpoSQLiteExperimentalCreateKVStore } from "@react-native-replicache/react-native-expo-sqlite";
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { Replicache, WriteTransaction } from "replicache";
+import { useEffect, useState, useMemo } from "react";
+import { useSubscribe } from "replicache-react";
+import { Text } from "react-native-paper";
+import { Keyboard } from "react-native";
+
 import { Todo, TodoWithID } from "../../../../types";
 import TodoComponent from "../../../Components/Todo";
 
@@ -21,16 +19,8 @@ type ToDoListItemType = {
 };
 
 const useTodosScreenLogic = () => {
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        if (newGenericDb) {
-          // newGenericDb.destroy();
-          // newGenericDb.close();
-        }
-      };
-    }, [])
-  );
+  const [r, setR] = useState<Replicache<any> | null>(null);
+  const [openUpodateModal, setOpenUpodateModal] = useState(false);
 
   const route = useRoute();
 
@@ -39,8 +29,6 @@ const useTodosScreenLogic = () => {
   if (!licenseKey) {
     throw new Error("Missing REPLICACHE_LICENSE_KEY");
   }
-
-  const [r, setR] = useState<Replicache<any> | null>(null);
 
   useEffect(() => {
     // console.log("updating replicache");
@@ -186,6 +174,13 @@ const useTodosScreenLogic = () => {
     }
   };
 
+  const openModal = () => {
+    setOpenUpodateModal(true);
+  };
+  const closeModal = () => {
+    setOpenUpodateModal(false);
+  };
+
   const ToDoRenderItem = ({
     index,
     item,
@@ -199,8 +194,28 @@ const useTodosScreenLogic = () => {
         todo={item[1]}
         handleComplete={handleComplete}
         handleDeleteTodo={handleDeleteTodo}
+        handleUpdateTodo={handleUpdateTodo}
       />
     );
+  };
+
+  const TodoEmptyComponent = () => {
+    return (
+      <Text className="text-center	text-xl mt-4">Your to do list is empty!</Text>
+    );
+  };
+
+  const navigation = useNavigation();
+
+  const logoutUser = async () => {
+    try {
+      await AsyncStorage.removeItem("@userID");
+    } catch (e) {
+      // remove error
+    }
+    console.log("Done.");
+
+    navigation.navigate("Home");
   };
 
   return {
@@ -212,6 +227,10 @@ const useTodosScreenLogic = () => {
     handleDeleteTodo,
     setContent,
     ToDoRenderItem,
+    TodoEmptyComponent,
+    logoutUser,
+    openUpodateModal,
+    closeModal,
   };
 };
 

@@ -14,8 +14,8 @@ const ScreenWrapper: FC<PropsWithChildren> = ({ children }) => {
         <KeyboardAwareScrollView
           scrollEnabled={true}
           enableOnAndroid={true}
-          extraScrollHeight={Platform.OS === "android" ? 100 : 0}
-          extraHeight={Platform.select({ android: 100 })}
+          extraScrollHeight={Platform.OS === "android" ? -50 : 0}
+          // extraHeight={Platform.select({ android: 100 })}
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
         >
