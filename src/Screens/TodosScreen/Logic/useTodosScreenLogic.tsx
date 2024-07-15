@@ -12,6 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
 import { Todo, TodoWithID } from "../../../../types";
 import TodoComponent from "../../../Components/Todo";
+import { Text } from "react-native-paper";
 
 const VITE_PUBLIC_REPLICHAT_PUSHER_KEY = "7bd83beeb647bd419630";
 const VITE_PUBLIC_REPLICHAT_PUSHER_CLUSTER = "ap2";
@@ -203,6 +204,12 @@ const useTodosScreenLogic = () => {
     );
   };
 
+  const TodoEmptyComponent = () => {
+    return (
+      <Text className="text-center	text-xl">Your to do list is empty!</Text>
+    );
+  };
+
   return {
     content,
     onSubmit,
@@ -212,6 +219,7 @@ const useTodosScreenLogic = () => {
     handleDeleteTodo,
     setContent,
     ToDoRenderItem,
+    TodoEmptyComponent,
   };
 };
 
