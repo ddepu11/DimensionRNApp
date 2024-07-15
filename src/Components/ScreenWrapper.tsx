@@ -12,7 +12,7 @@ const ScreenWrapper: FC<PropsWithChildren> = ({ children }) => {
     <SafeAreaView className="flex-1 px-5">
       <Pressable className="flex-1" onPress={closeKeyboard}>
         <KeyboardAwareScrollView
-          scrollEnabled={true}
+          scrollEnabled={false}
           enableOnAndroid={true}
           extraScrollHeight={Platform.OS === "android" ? 100 : 0}
           extraHeight={Platform.select({ android: 100 })}

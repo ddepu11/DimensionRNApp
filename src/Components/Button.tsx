@@ -1,5 +1,10 @@
 import React, { FC } from "react";
-import { GestureResponderEvent, Pressable } from "react-native";
+import {
+  GestureResponderEvent,
+  Pressable,
+  StyleProp,
+  ViewStyle,
+} from "react-native";
 import { Text } from "react-native-paper";
 
 type Props = {
@@ -8,6 +13,7 @@ type Props = {
   textClassName?: string;
   text: string;
   onPress?: ((event: GestureResponderEvent) => void) | null;
+  style?: StyleProp<ViewStyle>;
 };
 
 const Button: FC<Props> = ({
@@ -16,9 +22,15 @@ const Button: FC<Props> = ({
   onPress,
   textClassName,
   text,
+  style,
 }) => {
   return (
-    <Pressable disabled={disabled} className={className} onPress={onPress}>
+    <Pressable
+      disabled={disabled}
+      className={className}
+      onPress={onPress}
+      style={style}
+    >
       <Text className={textClassName}>{text}</Text>
     </Pressable>
   );

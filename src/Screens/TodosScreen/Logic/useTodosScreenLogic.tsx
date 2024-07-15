@@ -1,22 +1,15 @@
-import { useCallback, useMemo } from "react";
-import { useEffect, useState } from "react";
-import { Keyboard, Pressable, View } from "react-native";
-import { Replicache, WriteTransaction } from "replicache";
-import {
-  createReplicacheExpoSQLiteExperimentalCreateKVStore,
-  newGenericDb,
-} from "@react-native-replicache/react-native-expo-sqlite";
-import { useSubscribe } from "replicache-react";
-import {
-  useFocusEffect,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createReplicacheExpoSQLiteExperimentalCreateKVStore } from "@react-native-replicache/react-native-expo-sqlite";
 import { Pusher, PusherEvent } from "@pusher/pusher-websocket-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { Replicache, WriteTransaction } from "replicache";
+import { useEffect, useState, useMemo } from "react";
+import { useSubscribe } from "replicache-react";
+import { Text } from "react-native-paper";
+import { Keyboard } from "react-native";
+
 import { Todo, TodoWithID } from "../../../../types";
 import TodoComponent from "../../../Components/Todo";
-import { Text } from "react-native-paper";
 
 const VITE_PUBLIC_REPLICHAT_PUSHER_KEY = "7bd83beeb647bd419630";
 const VITE_PUBLIC_REPLICHAT_PUSHER_CLUSTER = "ap2";
@@ -26,16 +19,8 @@ type ToDoListItemType = {
 };
 
 const useTodosScreenLogic = () => {
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        if (newGenericDb) {
-          // newGenericDb.destroy();
-          // newGenericDb.close();
-        }
-      };
-    }, [])
-  );
+  const [r, setR] = useState<Replicache<any> | null>(null);
+  const [openUpodateModal, setOpenUpodateModal] = useState(false);
 
   const route = useRoute();
 
@@ -44,8 +29,6 @@ const useTodosScreenLogic = () => {
   if (!licenseKey) {
     throw new Error("Missing REPLICACHE_LICENSE_KEY");
   }
-
-  const [r, setR] = useState<Replicache<any> | null>(null);
 
   useEffect(() => {
     // console.log("updating replicache");
@@ -191,6 +174,13 @@ const useTodosScreenLogic = () => {
     }
   };
 
+  const openModal = () => {
+    setOpenUpodateModal(true);
+  };
+  const closeModal = () => {
+    setOpenUpodateModal(false);
+  };
+
   const ToDoRenderItem = ({
     index,
     item,
@@ -204,6 +194,7 @@ const useTodosScreenLogic = () => {
         todo={item[1]}
         handleComplete={handleComplete}
         handleDeleteTodo={handleDeleteTodo}
+        handleUpdateTodo={handleUpdateTodo}
       />
     );
   };
@@ -238,6 +229,8 @@ const useTodosScreenLogic = () => {
     ToDoRenderItem,
     TodoEmptyComponent,
     logoutUser,
+    openUpodateModal,
+    closeModal,
   };
 };
 

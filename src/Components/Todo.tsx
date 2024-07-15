@@ -1,4 +1,4 @@
-import React, { FC, useRef } from "react";
+import React, { FC, useRef, useState } from "react";
 import {
   GestureResponderEvent,
   Pressable,
@@ -10,68 +10,86 @@ import { Ionicons } from "@expo/vector-icons";
 import CheckBox from "@react-native-community/checkbox";
 
 import { TodoWithID } from "../../types";
+import UpdateTodo from "./UpdateTodo";
 
 type Props = {
   index: number;
   todo: TodoWithID;
   handleComplete: (todo: TodoWithID) => void;
   handleDeleteTodo: (todo: TodoWithID) => void;
-  openModal: () => void;
+  handleUpdateTodo: (todo: TodoWithID) => void;
 };
 
 const Todo: FC<Props> = ({
   todo,
   handleComplete,
   handleDeleteTodo,
-  openModal,
+  handleUpdateTodo,
 }) => {
+  const [openUpodateModal, setOpenUpodateModal] = useState(false);
+
   const { completed, content } = todo;
 
   const completeTodo = () => handleComplete({ ...todo, completed: !completed });
   const deleteTodod = () => handleDeleteTodo({ ...todo });
 
-  const flag = useRef(false);
-
-  const checkBoxOnTouchStart = (e: GestureResponderEvent) => {
-    flag.current = false;
-  };
+  const flag = useRef(true);
 
   const checkBoxOnTouchEnd = (e: GestureResponderEvent) => {
-    flag.current = true;
+    closeModal();
+  };
+
+  const openModal = () => {
+    setOpenUpodateModal(true);
+  };
+  const closeModal = () => {
+    setOpenUpodateModal(false);
+  };
+
+  const updateToDo = (content: string) => {
+    handleUpdateTodo({ ...todo, content });
   };
 
   return (
-    <Pressable
-      className="mb-4 flex-row justify-between rounded-2xl border-2 border-gray-200 bg-white p-3"
-      style={styles.boxShadow}
-      onPress={flag.current ? openModal : null}
-    >
-      <View className={"flex-row justify-start items-center"}>
-        <CheckBox
-          disabled={false}
-          value={completed}
-          onTouchStart={checkBoxOnTouchStart}
-          onTouchEnd={checkBoxOnTouchEnd}
-          onValueChange={completeTodo}
-          boxType="square"
-          style={{ width: 20, height: 20, zIndex: 9999 }}
-        />
+    <>
+      <Pressable
+        className="mb-4 flex-row justify-between rounded-2xl border-2 border-gray-200 bg-white p-3"
+        style={styles.boxShadow}
+        onPress={openModal}
+      >
+        <View className={"flex-row justify-start items-center"}>
+          <CheckBox
+            disabled={false}
+            value={completed}
+            onTouchEnd={checkBoxOnTouchEnd}
+            onValueChange={completeTodo}
+            boxType="square"
+            style={{ width: 20, height: 20, zIndex: 9999 }}
+          />
 
-        <Text
-          className="text-l ml-2"
-          style={{
-            width: "86%",
-            textDecorationLine: `${completed ? "line-through" : undefined}`,
-          }}
-        >
-          {content}
-        </Text>
-      </View>
+          <Text
+            className="text-l ml-2"
+            style={{
+              width: "86%",
+              textDecorationLine: `${completed ? "line-through" : undefined}`,
+            }}
+          >
+            {content}
+          </Text>
+        </View>
 
-      <Pressable onPress={deleteTodod} className="items-center">
-        <Ionicons name="trash-bin-sharp" size={18} color="red" />
+        <Pressable onPress={deleteTodod} className="items-center">
+          <Ionicons name="trash-bin-sharp" size={18} color="red" />
+        </Pressable>
       </Pressable>
-    </Pressable>
+
+      <UpdateTodo
+        visible={openUpodateModal}
+        closeModal={closeModal}
+        conent={content}
+        updateToDo={updateToDo}
+      />
+    </>
   );
 };
 

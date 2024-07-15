@@ -16,11 +16,12 @@ const TodosScreen: FC = () => {
     ToDoRenderItem,
     TodoEmptyComponent,
     logoutUser,
+    openUpodateModal,
+    closeModal,
   } = useTodosScreenLogic();
-
   return (
     <ScreenWrapper>
-      <View className="flex-1 pt-3 justify-between">
+      <View className="pt-3 flex-1 justify-between">
         <View className="flex-row justify-between items-center">
           <Text
             variant="headlineSmall"
@@ -30,7 +31,6 @@ const TodosScreen: FC = () => {
           </Text>
 
           <Button
-            // disabled={isLogoutDisabled}
             text="Logout"
             className="bg-slate-500 rounded-sm px-2 py-1"
             textClassName="text-white text-sm text-center"
@@ -38,23 +38,27 @@ const TodosScreen: FC = () => {
           />
         </View>
 
-        <View className="mt-2 w-full relative  h-4/5">
+        <View className="mt-2 w-full" style={{ height: 600 }}>
           <Text variant="headlineSmall" className="text-3xl text-black">
             All ToDos
           </Text>
-
           <FlashList
             data={todos}
-            scrollEnabled
             bounces={false}
+            showsVerticalScrollIndicator={false}
             renderItem={ToDoRenderItem}
             estimatedItemSize={100}
-            contentContainerStyle={{ paddingTop: 20 }}
+            contentContainerStyle={{
+              paddingTop: 10,
+              paddingHorizontal: 1,
+            }}
+            // style={{ overflow: "visible" }}
+            overScrollMode="never"
             ListEmptyComponent={TodoEmptyComponent}
           />
         </View>
 
-        <View className="flex-row justify-between align-middle">
+        <View className="flex-row justify-between">
           <InputBox
             keyboardType={"default"}
             value={content}
