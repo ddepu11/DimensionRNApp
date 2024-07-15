@@ -1,8 +1,13 @@
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { FC } from "react";
 
-import { CustomRadioButton, InputBox, ScreenWrapper } from "../../Components";
+import {
+  Button,
+  CustomRadioButton,
+  InputBox,
+  ScreenWrapper,
+} from "../../Components";
 import useHomeScreenLogic from "./Logic/useHomeScreenLogic";
 
 const HomeScreen: FC = () => {
@@ -67,18 +72,13 @@ const HomeScreen: FC = () => {
           className="mt-7 rounded-md w-full"
         />
 
-        <Pressable
+        <Button
           disabled={!uniqueId}
+          text="Submit"
           className="bg-slate-500 p-3 mt-10 rounded-sm"
+          textClassName="text-white text-xl text-center"
           onPress={onSubmit}
-        >
-          <Text
-            className="text-white text-xl"
-            style={{ fontSize: 18, textAlign: "center" }}
-          >
-            Submit
-          </Text>
-        </Pressable>
+        />
       </View>
     </ScreenWrapper>
   );
