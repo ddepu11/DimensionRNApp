@@ -210,7 +210,7 @@ const useTodosScreenLogic = () => {
 
   const TodoEmptyComponent = () => {
     return (
-      <Text className="text-center	text-xl">Your to do list is empty!</Text>
+      <Text className="text-center	text-xl mt-4">Your to do list is empty!</Text>
     );
   };
 
