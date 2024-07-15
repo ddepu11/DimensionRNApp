@@ -11,12 +11,10 @@ import { Keyboard } from "react-native";
 import { Todo, TodoWithID } from "../../../../types";
 import TodoComponent from "../../../Components/Todo";
 
-const {
-  EXPO_PUBLIC_REPLICHAT_PUSHER_KEY,
-  EXPO_PUBLIC_REPLICHAT_PUSHER_CLUSTER,
-  EXPO_PUBLIC_RAPLICACHE_LICENCE_KEY,
-  EXPO_PUBLIC_BASE_URL,
-} = process.env;
+const EXPO_PUBLIC_REPLICHAT_PUSHER_KEY = "7bd83beeb647bd419630";
+const EXPO_PUBLIC_REPLICHAT_PUSHER_CLUSTER = "ap2";
+const EXPO_PUBLIC_RAPLICACHE_LICENCE_KEY = "l704b192f22514ec4a563ab1400eab5fa";
+const EXPO_PUBLIC_BASE_URL = "https://dimensionserver.onrender.com";
 
 type ToDoListItemType = {
   item: [string, TodoWithID];
