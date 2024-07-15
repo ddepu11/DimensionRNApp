@@ -36,3 +36,7 @@ To run the project, use the following command:
 ```bash
 yarn android or yarn ios
 ```
+
+## Backend
+
+### https://github.com/ddepu11/DimensionServer it is live and deloyed on [www.onrender.com](https://render.com/)
