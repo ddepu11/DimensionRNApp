@@ -86,12 +86,14 @@ const Todo: FC<Props> = ({
         />
       </Pressable>
 
-      <UpdateTodo
-        visible={openUpodateModal}
-        closeModal={closeModal}
-        conent={content}
-        updateToDo={updateToDo}
-      />
+      {openUpodateModal ? (
+        <UpdateTodo
+          visible={openUpodateModal}
+          closeModal={closeModal}
+          conent={content}
+          updateToDo={updateToDo}
+        />
+      ) : null}
     </>
   );
 };
